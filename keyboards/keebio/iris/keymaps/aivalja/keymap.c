@@ -7,6 +7,12 @@
 #define _ADJUST 3
 #define _QWERTY 4
 
+
+// For recording heatmap
+#ifdef CONSOLE_ENABLE
+#include "print.h"
+#endif
+
 enum custom_keycodes {
   DVORAK = SAFE_RANGE,
   LOWER,
@@ -42,7 +48,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_TILD, KC_EXLM, KC_AT,   KC_LT,   KC_GT,   KC_AMPR,                            KC_CIRC, KC_TRNS, KC_TRNS, KC_TRNS, KC_PEQL, KC_BSPC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     LALT(KC_TAB), KC_BSLS, KC_SLSH, KC_LPRN, KC_RPRN, KC_PEQL,                           KC_TRNS, KC_P7,   KC_P8,   KC_P9,   KC_P0,   KC_TRNS,
+     LALT(KC_TAB), KC_BSLS, KC_SLSH, KC_LPRN, KC_RPRN, KC_PEQL,                       KC_TRNS, KC_P7,   KC_P8,   KC_P9,   KC_P0,   KC_TRNS,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TRNS, KC_SCLN,S(KC_SCLN),KC_LBRC, KC_RBRC, KC_ASTR,                            KC_TRNS, KC_P4,   KC_P5,   KC_P6,   KC_PLUS, KC_PIPE,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -96,6 +102,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+#ifdef CONSOLE_ENABLE
+  uprintf("0x%04X,%u,%u,%u,%b,0x%02X,0x%02X,%u\n",
+          keycode,
+          record->event.key.row,
+          record->event.key.col,
+          get_highest_layer(layer_state),
+          record->event.pressed,
+          get_mods(),
+          get_oneshot_mods(),
+          record->tap.count
+         );
+#endif
   switch (keycode) {
     case DVORAK:
       if (record->event.pressed) {
