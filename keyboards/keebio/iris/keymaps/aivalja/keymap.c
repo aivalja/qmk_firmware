@@ -24,6 +24,7 @@ enum custom_keycodes {
 //     TODO:
 // * äöå
 // * capslock
+// * shift-insert (for putty)
 // ******* need better locations
 // * ctrl-s
 // ?-merkki
