@@ -25,10 +25,20 @@ enum custom_keycodes {
 // * äöå
 // * capslock
 // * shift-insert (for putty)
+// * 'Back quote'
+// * mod-1 + "5" -> %? (now is &)
 // ******* need better locations
+// * |-merkki
 // * ctrl-s
-// ?-merkki
-//
+// * ?-merkki
+// + and - -signs: maybe under =?
+// ******* Nice to have
+// Dedicated on left hand:
+//     * copy-paste-cut
+//     * backspace/del
+//     * pageup/down
+// ******* Need to thing about
+// * move different parenthesis to right hand to reduce left-hand usage?
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_DVORAK] = LAYOUT(
@@ -41,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LCTL, KC_BSLS, KC_Q,    KC_J,    KC_K,    KC_X,    KC_SPC,          KC_MPLY,  KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_RCTL,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    KC_LGUI, MO(1),   KC_NO,                    KC_ENT,   MO(2),   KC_LALT
+                                    KC_LGUI, MO(1),   KC_SPC,                    KC_ENT,   MO(2),   KC_LALT
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 

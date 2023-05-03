@@ -18,4 +18,8 @@
 
 #pragma once
 
+#define PLOOPY_DRAGSCROLL_FIXED 1
+//#define PLOOPY_DRAGSCROLL_INVERT 1
+#define PLOOPY_DRAGSCROLL_DPI 100  // Fixed-DPI Drag Scroll
+
 #define DYNAMIC_KEYMAP_LAYER_COUNT 8
