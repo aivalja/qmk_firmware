@@ -74,6 +74,13 @@ uint16_t lastMidClick      = 0; // Stops scrollwheel from being read if it was p
 pin_t    encoder_pins_a[1] = ENCODERS_PAD_A;
 pin_t    encoder_pins_b[1] = ENCODERS_PAD_B;
 bool     debug_encoder     = false;
+// ----------------
+#define PLOOPY_DRAGSCROLL_DENOMINATOR 5;
+static int _dragscroll_accumulator_x = 0;
+static int _dragscroll_accumulator_y = 0;
+// ----------------
+
+__attribute__((weak)) bool encoder_update_user(uint8_t index, bool clockwise) { return true; }
 
 bool encoder_update_kb(uint8_t index, bool clockwise) {
     if (!encoder_update_user(index, clockwise)) {
@@ -149,6 +156,32 @@ report_mouse_t pointing_device_task_kb(report_mouse_t mouse_report) {
         mouse_report.x = 0;
         mouse_report.y = 0;
 
+#ifdef MY_CHANGES
+#ifdef PLOOPY_DRAGSCROLL_H_INVERT
+        // Invert horizontal scroll direction
+        _dragscroll_accumulator_x += -mouse_report.x;
+#else
+        _dragscroll_accumulator_x += mouse_report.x;
+#endif
+#ifdef PLOOPY_DRAGSCROLL_INVERT
+        // Invert vertical scroll direction
+        _dragscroll_accumulator_y += -mouse_report.y;
+#else
+        _dragscroll_accumulator_y += mouse_report.y;
+#endif
+        int div_x = _dragscroll_accumulator_x / PLOOPY_DRAGSCROLL_DENOMINATOR;
+        int div_y = _dragscroll_accumulator_y / PLOOPY_DRAGSCROLL_DENOMINATOR;
+
+        if (div_x != 0) {
+            mouse_report.h += div_x;
+            _dragscroll_accumulator_x -= div_x * PLOOPY_DRAGSCROLL_DENOMINATOR;
+        }
+
+        if (div_y != 0) {
+            mouse_report.v += div_y;
+            _dragscroll_accumulator_y -= div_y * PLOOPY_DRAGSCROLL_DENOMINATOR;
+        }
+#endif // MY_CHANGES
         mouse_report.x = 0;
         mouse_report.y = 0;
     }
