@@ -17,6 +17,7 @@
  */
 
 #include "trackball.h"
+#include <math.h>
 
 #ifndef OPT_DEBOUNCE
 #    define OPT_DEBOUNCE 5  // (ms) 			Time between scroll events
@@ -72,6 +73,8 @@ static int _dragscroll_accumulator_x = 0;
 static int _dragscroll_accumulator_y = 0;
 // ----------------
 
+//void mouse_acceleration( report_mouse_t mouse_report);
+//int acceleration_formula(int change);
 __attribute__((weak)) bool encoder_update_user(uint8_t index, bool clockwise) { return true; }
 
 bool encoder_update_kb(uint8_t index, bool clockwise) {
@@ -151,10 +154,54 @@ report_mouse_t pointing_device_task_kb(report_mouse_t mouse_report) {
         }
         mouse_report.x = 0;
         mouse_report.y = 0;
+    } else if (1) {
+        float multiplier = 1;
+        float x = mouse_report.x;
+        float y = mouse_report.y;
+        float adjusted_magnitude = powf(powf(x,2) + powf(y,2), 0.45f);
+
+        x = x*adjusted_magnitude*multiplier;
+        if (x > 127){
+            mouse_report.x = 127;
+        } else {
+            mouse_report.x = (uint8_t) x;
+        }
+        y = y*adjusted_magnitude*multiplier;
+        if (y > 127){
+            mouse_report.y = 127;
+        } else {
+            mouse_report.y = (uint8_t) y;
+        }
+        //mouse_acceleration(mouse_report);
     }
 
     return pointing_device_task_user(mouse_report);
 }
+
+// void mouse_acceleration( report_mouse_t mouse_report) {
+//     // Calculate mouse acceleration here
+//     int lower_limit = 1;
+//     int upper_limit = 16000;
+
+//     int x = acceleration_formula(mouse_report.x);
+//     if(x > upper_limit){
+//         mouse_report.x = upper_limit;
+//     } else if (x > lower_limit){
+//         mouse_report.x = x;
+//     }
+
+//     int y = acceleration_formula(mouse_report.y);
+//     if(y > upper_limit){
+//         mouse_report.y = upper_limit;
+//     } else if (y > lower_limit){
+//         mouse_report.y = y;
+//     }
+// }
+
+// int acceleration_formula(int change) {
+//     float accel_factor = 1.1;
+//     return pow(change, accel_factor);
+// }
 
 bool process_record_kb(uint16_t keycode, keyrecord_t* record) {
     if (true) {

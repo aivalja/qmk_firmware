@@ -34,6 +34,7 @@ enum custom_keycodes {
 // + and - -signs: maybe under =?
 // ******* Nice to have
 // Dedicated on left hand:
+//     * Could use tap-dance on mod-key to toggle left-hand mode. Then should disable keys that are not meant to be used then, and use leds to highlight active keys
 //     * copy-paste-cut
 //     * backspace/del
 //     * pageup/down
