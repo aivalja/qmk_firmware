@@ -27,6 +27,9 @@ enum custom_keycodes {
 // * shift-insert (for putty)
 // * 'Back quote'
 // * mod-1 + "5" -> %? (now is &)
+// * replace numpad with regular numbers
+// * Home
+// * End
 // ******* need better locations
 // * |-merkki
 // * ctrl-s

@@ -22,3 +22,40 @@
 
 // Dummy
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {{{ KC_NO }}};
+
+#define DELTA_X_THRESHOLD 60
+#define DELTA_Y_THRESHOLD 15
+
+// State
+static bool   scroll_enabled  = true;
+//static bool   num_lock_state  = false;
+//static bool   caps_lock_state = false;
+//static bool   in_cmd_window   = false;
+static int8_t delta_x         = 0;
+static int8_t delta_y         = 0;
+
+report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
+    if (scroll_enabled) {
+        delta_x += mouse_report.x;
+        delta_y += mouse_report.y;
+
+        if (delta_x > DELTA_X_THRESHOLD) {
+            mouse_report.h = 1;
+            delta_x        = 0;
+        } else if (delta_x < -DELTA_X_THRESHOLD) {
+            mouse_report.h = -1;
+            delta_x        = 0;
+        }
+
+        if (delta_y > DELTA_Y_THRESHOLD) {
+            mouse_report.v = -1;
+            delta_y        = 0;
+        } else if (delta_y < -DELTA_Y_THRESHOLD) {
+            mouse_report.v = 1;
+            delta_y        = 0;
+        }
+        mouse_report.x = 0;
+        mouse_report.y = 0;
+    }
+    return mouse_report;
+}
