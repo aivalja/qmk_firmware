@@ -30,6 +30,8 @@ enum custom_keycodes {
 // * replace numpad with regular numbers
 // * Home
 // * End
+// * Arrows-layer: , and p to pgup and pgdown
+// * "backtick"
 // ******* need better locations
 // * |-merkki
 // * ctrl-s
