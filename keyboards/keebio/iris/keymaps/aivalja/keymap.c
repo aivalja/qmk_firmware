@@ -1,5 +1,5 @@
 #include QMK_KEYBOARD_H
-
+#include "keymap_finnish.h" // TODO: Convert to using Finnish keymap. See quantum/keymap_extras/keymap_finnish.h
 
 #define _DVORAK 0
 #define _LOWER 1
@@ -20,6 +20,25 @@ enum custom_keycodes {
   ADJUST,
   QWERTY
 };
+
+enum unicode_names {
+  U_A_UML_LOWER,  // ä
+  U_A_UML_UPPER,  // Ä
+  U_O_UML_LOWER,  // ö
+  U_O_UML_UPPER,  // Ö
+};
+
+const uint32_t unicode_map[] PROGMEM = {
+  [U_A_UML_LOWER]= 0x00e4,  // ä
+  [U_A_UML_UPPER]= 0x00c4,  // Ä
+  [U_O_UML_LOWER]= 0x00f6,  // ö
+  [U_O_UML_UPPER]= 0x00d6,  // Ö
+};
+
+// ä and Ä keycode.
+#define U_A_UML UP(U_A_UML_LOWER, U_A_UML_UPPER)
+// ö and Ö keycode.
+#define U_O_UML UP(U_O_UML_LOWER, U_O_UML_UPPER)
 
 //     TODO:
 // * äöå
@@ -55,7 +74,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LSFT, KC_A,    KC_O,    KC_E,    KC_U,    KC_I,                               KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_RSFT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LCTL, KC_BSLS, KC_Q,    KC_J,    KC_K,    KC_X,    KC_SPC,          KC_MPLY,  KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_RCTL,
+     KC_LCTL, U_A_UML, KC_Q,    KC_J,    KC_K,    KC_X,    KC_SPC,          KC_MPLY,  KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_RCTL,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     KC_LGUI, MO(1),   KC_SPC,                    KC_ENT,   MO(2),   KC_LALT
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -63,15 +82,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_LOWER] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_TILD, KC_EXLM, KC_AT,   KC_LT,   KC_GT,   KC_AMPR,                            KC_CIRC, KC_TRNS, KC_TRNS, KC_TRNS, KC_PEQL, KC_BSPC,
+     KC_TILD, KC_EXLM, KC_AT,   KC_LT,   KC_GT,   KC_AMPR,                            KC_CIRC, _______, _______, _______, KC_PEQL, KC_BSPC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     LALT(KC_TAB), KC_BSLS, KC_SLSH, KC_LPRN, KC_RPRN, KC_PEQL,                       KC_TRNS, KC_P7,   KC_P8,   KC_P9,   KC_P0,   KC_TRNS,
+     LALT(KC_TAB), KC_BSLS, KC_SLSH, KC_LPRN, KC_RPRN, KC_PEQL,                       _______, KC_P7,   KC_P8,   KC_P9,   KC_P0,   _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_TRNS, KC_SCLN,S(KC_SCLN),KC_LBRC, KC_RBRC, KC_ASTR,                            KC_TRNS, KC_P4,   KC_P5,   KC_P6,   KC_PLUS, KC_PIPE,
+     _______, KC_SCLN,S(KC_SCLN),KC_LBRC, KC_RBRC, KC_ASTR,                            _______, KC_P4,   KC_P5,   KC_P6,   KC_PLUS, KC_PIPE,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_TRNS, KC_TRNS, KC_TRNS, KC_LCBR, KC_RCBR, KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_P1,   KC_P2,   KC_P3,   KC_MINS, KC_TRNS,
+     _______, U_O_UML, _______, KC_LCBR, KC_RCBR, _______, _______,          _______, _______, KC_P1,   KC_P2,   KC_P3,   KC_MINS, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    KC_TRNS, KC_TRNS, KC_DEL,                    KC_BSPC ,  MO(3),   KC_P0
+                                    _______, _______, KC_DEL,                    KC_BSPC ,  MO(3),   KC_P0
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
